@@ -47,22 +47,79 @@ class Contact:
         self.shipping_address = Address()
         self.contact_persons = []
         self.default_templates = DefaultTemplate()
+        self.gst_treatment = ''
+        self.place_of_contact = ''
+        self.gst_no = ''
     
-    def set_contact_id(self, contact_id):
-        """Set contact id for the contact.
+    def set_gst_no(self, gst_no):
+        """Set gst_no for the contact.
  
         Args: 
-            contact_id(str): Contact id of the contact.
+            gst_no(str): gst_no of the contact.
         
         """
-        self.contact_id = contact_id
+        self.gst_no = gst_no
  
-    def get_contact_id(self):
-        """Get contact_id of the contact.
+    def get_gst_no(self):
+        """Get gst_no of the contact.
        
         Returns:
-            str: Contact id of the contact.
+            str: gst_no of the contact.
    
+        """
+        return self.gst_no
+
+    def set_place_of_contact(self, place_of_contact):
+        """Set place_of_contact for the contact.
+
+        Args:
+            place_of_contact(str): place_of_contact of the contact.
+
+        """
+        self.place_of_contact = place_of_contact
+
+    def get_place_of_contact(self):
+        """Get place_of_contact of the contact.
+
+        Returns:
+            str: place_of_contact of the contact.
+
+        """
+        return self.place_of_contact
+
+    def set_gst_treatment(self, gst_treatment):
+        """Set gst_treatment for the contact.
+
+        Args:
+            gst_treatment(str): gst_treatment of the contact.
+
+        """
+        self.gst_treatment = gst_treatment
+
+    def get_gst_treatment(self):
+        """Get gst_treatment of the contact.
+
+        Returns:
+            str: gst_treatment of the contact.
+
+        """
+        return self.gst_treatment
+
+    def set_contact_id(self, contact_id):
+        """Set contact id for the contact.
+
+        Args:
+            contact_id(str): Contact id of the contact.
+
+        """
+        self.contact_id = contact_id
+
+    def get_contact_id(self):
+        """Get contact_id of the contact.
+
+        Returns:
+            str: Contact id of the contact.
+
         """
         return self.contact_id
 
@@ -504,7 +561,7 @@ class Contact:
         """Set billing address for the contact.
         
         Args:
-            billing_address(str): Billing address for the contact.
+            billing_address(Address): Billing address for the contact.
     
         """
         self.billing_address = billing_address
@@ -513,7 +570,7 @@ class Contact:
         """Get billing address of the contact.
          
         Returns:
-            str: Billing address of the contact.
+            Address: Billing address of the contact.
 
         """
         return self.billing_address
@@ -522,7 +579,7 @@ class Contact:
         """Set shipping address for the contact.
         
         Args:
-            shipping_address(str): Shipping address for the contact.
+            shipping_address(Address): Shipping address for the contact.
 
         """
         self.shipping_address = shipping_address
@@ -531,7 +588,7 @@ class Contact:
         """Get shipping address of the contact.
          
         Returns:
-            str: Shipping address of the contact.
+            Address: Shipping address of the contact.
 
         """
         return self.shipping_address
@@ -788,6 +845,8 @@ class Contact:
 
         """
         data = {}
+        if self.company_name != '':
+            data['company_name'] = self.company_name
         if self.contact_name != '':
             data['contact_name'] = self.contact_name
         if self.payment_terms != '':
@@ -798,14 +857,20 @@ class Contact:
             data['currency_id'] = self.currency_id
         if self.billing_address is not None: 
             billing_address = self.billing_address
-            data['billing_address'] = billing_address.toJSON()
+            data['billing_address'] = billing_address.to_json()
         if self.shipping_address is not None:
             shipping_address = self.shipping_address
-            data['shipping_address'] = shipping_address.toJSON()
+            data['shipping_address'] = shipping_address.to_json()
+        if self.gst_no != '':
+            data['gst_no'] = self.gst_no
+        if self.place_of_contact != '':
+            data['place_of_contact'] = self.place_of_contact
+        if self.gst_treatment != '':
+            data['gst_treatment'] = self.gst_treatment
         if self.contact_persons:
             data['contact_persons'] = []
             for value in self.contact_persons:
-                data['contact_persons'].append(value.toJSON())
+                data['contact_persons'].append(value.to_json())
         if self.notes != '':
             data['notes'] = self.notes
         return data

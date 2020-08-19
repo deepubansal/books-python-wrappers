@@ -146,5 +146,6 @@ class CustomField:
             #data['index'] = self.index
         if self.value != '':
             data['value'] = self.value
+            data['api_name'] = self.label
         return data
 

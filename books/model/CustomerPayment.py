@@ -16,6 +16,7 @@ class CustomerPayment:
         self.tax_account_id = ''
         self.account_id = ''
         self.payment_id = ''
+        self.invoice_id = ''
         self.payment_number = ''
         self.invoice_numbers = ''
         self.bcy_amount = 0
@@ -27,6 +28,7 @@ class CustomerPayment:
         self.last_modified_time = ''
         self.tax_account_name = ''
         self.tax_amount_withheld = 0.0
+        self.amount_applied = 0.0
    
     def set_customer_id(self, customer_id):
         """Set customer id.
@@ -473,5 +475,12 @@ class CustomerPayment:
         if self.tax_account_id != '':
             data['tax_account_id'] = self.tax_account_id
         if self.account_id != '':
-            data['account_id'] = self.account_id        
+            data['account_id'] = self.account_id
+        if self.invoice_id != '':
+            data['invoice_id'] = self.invoice_id
+        if self.amount_applied > 0:
+            data['amount_applied'] = self.amount_applied
+        if self.payment_number != '':
+            data['payment_number'] = self.payment_number
+
         return data

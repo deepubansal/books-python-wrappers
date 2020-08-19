@@ -1,6 +1,5 @@
-#$Id$#
-
-from urllib import urlencode,urlretrieve
+from urllib.parse import urlencode
+from urllib.request import urlretrieve
 from httplib2 import Http
 from json import dumps,loads
 from re import search
@@ -28,10 +27,12 @@ class ZohoHttpClient:
             dict: Dictionary containing response content.
 
         """
-        http, headers = get_http_connection()
-        url = url + '?' + form_query_string(details)
+        http, headers = get_http_connection(details['authtoken'])
+        if 'organization_id' in details and details['organization_id'] != '':
+            url = url + '?' + form_query_string({'organization_id': details['organization_id']})
         if query is not None: 
             url += '&' + form_query_string(query)
+        print("URL: {}".format(url))
         resp, content = http.request(url, 'GET', headers=headers)
         #print content
         response = get_response(resp['status'], content)
@@ -87,18 +88,20 @@ class ZohoHttpClient:
             attachment(dict, None): Files to be attached. Default to None.
 
         Returns:
-            tuple: Tuple containing response status(str) and content(dict).
+            dict: Dictionary containing response content.
         
         """
-        http, headers = get_http_connection()
-        url = url + '?' + form_query_string(details)
+        http, headers = get_http_connection(details['authtoken'])
+        url = url + '?' + form_query_string({'organization_id': details['organization_id']})
         if query_string is not None:  
             url = url + '&' + form_query_string(query_string)
+        print("URL: {}".format(url))
+        print("Body: {}".format(field))
         if attachment is None:
             body = urlencode(field)
         else:
-            body, headers = encode_multipart(field, attachment) 
-        resp, content = http.request(url, 'POST', headers=headers, 
+            body, headers = encode_multipart(field, attachment)
+        resp, content = http.request(url, 'POST', headers=headers,
                                          body=body)
         #print content
         response = get_response(resp['status'], content)
@@ -119,16 +122,18 @@ class ZohoHttpClient:
             tuple: Tuple containing response status(str) and content(dict).
         
         """
-        http, headers = get_http_connection()
+        http, headers = get_http_connection(details['authtoken'])
         url = url + '?' + form_query_string(details)
-        if query is not None:  
+        if query is not None:
             url = url + '&' + form_query_string(query)
+        print("URL: {}".format(url))
+        print("Body: {}".format(field))
         if attachment is None:
             body = urlencode(field)
         else:
-            body, headers = encode_multipart(field, attachment) 
-        resp, content = http.request(url, 'PUT', headers=headers, 
-                                         body=body)
+            body, headers = encode_multipart(field, attachment)
+        resp, content = http.request(url, 'PUT', headers=headers,
+                                     body=body)
         #print content
         response = get_response(resp['status'], content)
         return response
@@ -147,7 +152,7 @@ class ZohoHttpClient:
             tuple: Tuple containing response status(str) and content(dict).
         
         """
-        http, headers = get_http_connection()
+        http, headers = get_http_connection(details['authtoken'])
         url = url + '?' + form_query_string(details)
         if param is not None:
            url = url + '&' + form_query_string(param)
@@ -168,7 +173,7 @@ def form_query_string(parameter):
     """
     query = ''
     length = len(parameter) 
-    for key, value in parameter.items():  
+    for key, value in list(parameter.items()):  
         length = length-1
         query += str(key) + '=' + str(value)
         if length != 0:
@@ -195,7 +200,7 @@ def encode_multipart(fields, file_list, boundary=None):
 
     lines = []
     if fields['JSONString'] != '""':
-        for name, value in fields.items():
+        for name, value in list(fields.items()):
             lines.extend(('--{0}'.format(boundary),
                           'Content-Disposition: form-data; name="{0}"'\
                           .format(escape_quote(name)),
@@ -203,7 +208,7 @@ def encode_multipart(fields, file_list, boundary=None):
                           str(value),
                           ))
     for files in file_list:
-        for name, value in files.items():
+        for name, value in list(files.items()):
             filename = value['filename']
             if 'mimetype' in value:
                 mimetype = value['mimetype']
@@ -240,10 +245,10 @@ def convert(input):
     """
     if isinstance(input, dict):
         return {convert(key): convert(value) for key, value in \
-        input.iteritems()}
+        input.items()}
     elif isinstance(input, list):
         return [convert(element) for element in input]
-    elif isinstance(input, unicode):
+    elif isinstance(input, str):
         return input.encode('utf-8')
     else:
         return input
@@ -264,18 +269,20 @@ def get_response(status, content):
 
     """
     resp = loads(content)
-    response = convert(resp)
+    response = resp
     if status != '200' and status != '201':
         raise BooksException(response)
     else:
         return response
-         
-def get_http_connection():
+
+
+def get_http_connection(oauth_token):
     http = Http(timeout=60*1000)
     headers = {
             'Accept': 'application/json',
             'Content-type': 'application/x-www-form-urlencoded',
             'User-Agent': 'ZohoBooks-Python-Wrappers/1.0',
-            'Accept-Charset': 'UTF-8'
+            'Accept-Charset': 'UTF-8',
+            'Authorization': 'Zoho-oauthtoken {}'.format(oauth_token)
             }
     return http, headers

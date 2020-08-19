@@ -2,6 +2,8 @@
 
 from books.model.CustomerPayment import CustomerPayment
 from books.model.CustomerPaymentList import CustomerPaymentList
+from books.model.CreditNoteRefund import CreditNoteRefund
+from books.model.CreditNoteRefundList import CreditNoteRefundList
 from books.model.PageContext import PageContext
 from books.model.Invoice import Invoice
 
@@ -53,6 +55,44 @@ class CustomerPaymentsParser:
         page_context_obj.set_sort_order(page_context['sort_order'])
         customer_payment_list.set_page_context(page_context_obj)
         return customer_payment_list
+
+    def payment_refunds(self,response):
+        """This method parses the given response and returns credit notes
+            refund list.
+
+        Args:
+            response(dict): Repsonse containing json object for credit notes
+                list.
+
+        Returns:
+            instance: Creditnote list object.
+
+        """
+        payment_refunds_list=CreditNoteRefundList()
+        if 'payment_refunds' not in response:
+            response['payment_refunds'] = [response['payment_refund']]
+        for value in response['payment_refunds']:
+            payment_refund=CreditNoteRefund()
+            payment_refund.set_creditnote_refund_id(value['payment_refund_id'])
+            payment_refund.set_creditnote_id(value['payment_id'])
+            payment_refund.set_date(value['date'])
+            payment_refund.set_refund_mode(value['refund_mode'])
+            payment_refund.set_reference_number(value['reference_number'])
+            payment_refund.set_description(value['description'])
+            payment_refund.set_amount(value['amount'])
+            payment_refunds_list.set_creditnote_refunds(payment_refund)
+        if 'page_context' in response:
+            page_context=response['page_context']
+            page_context_obj=PageContext()
+            page_context_obj.set_page(page_context['page'])
+            page_context_obj.set_per_page(page_context['per_page'])
+            page_context_obj.set_has_more_page(page_context['has_more_page'])
+            page_context_obj.set_report_name(page_context['report_name'])
+            page_context_obj.set_sort_column(page_context['sort_column'])
+            page_context_obj.set_sort_order(page_context['sort_order'])
+            payment_refunds_list.set_page_context(page_context_obj)
+        return payment_refunds_list
+
 
     def get_customer_payment(self,response):
         """This method parses the given response and returns customer payments 

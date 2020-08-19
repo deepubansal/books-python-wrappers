@@ -99,11 +99,12 @@ class InvoicesParser:
         invoice_object.set_reference_number(invoice['reference_number'])
         invoice_object.set_customer_id(invoice['customer_id'])
         invoice_object.set_customer_name(invoice['customer_name'])
-        invoice_object.set_contact_persons(invoice['contact_persons'])
+        invoice_object.set_contact_persons(invoice['contact_persons_details'])
         invoice_object.set_currency_id(invoice['currency_id'])
         invoice_object.set_currency_code(invoice['currency_code'])
         invoice_object.set_exchange_rate(invoice['exchange_rate'])
         invoice_object.set_discount(invoice['discount'])
+        invoice_object.gst_no = invoice['gst_no']
         invoice_object.set_is_discount_before_tax(invoice[\
         'is_discount_before_tax'])
         invoice_object.set_discount_type(invoice['discount_type'])
@@ -130,6 +131,7 @@ class InvoicesParser:
             line_item.set_tax_name(value['tax_name'])
             line_item.set_tax_type(value['tax_type'])
             line_item.set_tax_percentage(value['tax_percentage'])
+            line_item.set_hsn_or_sac(value['hsn_or_sac'])
             line_item.set_item_total(value['item_total'])
             invoice_object.set_line_items(line_item)
         invoice_object.set_shipping_charge(invoice['shipping_charge'])

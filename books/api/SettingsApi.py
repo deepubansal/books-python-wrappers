@@ -591,7 +591,7 @@ class SettingsApi:
         data = {
             'JSONString': json_obj
             }
-        print data
+        print(data)
         resp = zoho_http_client.post(url, self.details, data)
         return parser.get_tax_group(resp) 
 

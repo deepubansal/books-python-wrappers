@@ -16,6 +16,25 @@ class Item:
         self.tax_name = ''
         self.tax_percentage = 0.0
         self.tax_type = ''
+        self.item_tax_preferences = []
+
+    def set_item_tax_preferences(self, item_tax_preference):
+        """Set item_tax_preferences.
+
+        Args:
+            item_tax_preference(instance): item_tax_preference object.
+
+        """
+        self.item_tax_preferences.append(item_tax_preference)
+
+    def get_item_tax_preferences(self):
+        """Get item_tax_preference.
+
+        Returns: 
+            instance: item_tax_preference object.
+
+        """
+        return self.item_tax_preferences
 
     def set_item_id(self, item_id):
         """Set item id.
@@ -251,5 +270,7 @@ class Item:
             data['account_id'] = self.account_id 
         if self.tax_id != '':
             data['tax_id'] = self.tax_id
+        if self.item_tax_preferences:
+            data['item_tax_preferences'] = self.item_tax_preferences
         return data
 

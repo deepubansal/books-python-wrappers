@@ -1,7 +1,7 @@
 #$Id$#
 
 from books.util.ZohoHttpClient import ZohoHttpClient
-from books.parser.BankAccountsParser import BankAccountsParser 
+from books.parser.BankAccountsParser import BankAccountsParser
 from books.api.Api import Api
 from json import dumps
 

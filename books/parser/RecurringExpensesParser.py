@@ -1,7 +1,7 @@
 #$Id$#
 
 from books.model.RecurringExpense import RecurringExpense
-from books.model.RecurringExpenseList import RecurringExpenseList  
+from books.model.RecurringExpenseList import RecurringExpenseList
 from books.model.Expense import Expense
 from books.model.ExpenseList import ExpenseList
 from books.model.Comment import Comment

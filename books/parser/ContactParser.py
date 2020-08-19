@@ -45,6 +45,9 @@ class ContactParser:
         contact.set_currency_id(response['currency_id'])
         contact.set_currency_code(response['currency_code'])
         contact.set_currency_symbol(response['currency_symbol'])
+        contact.set_gst_treatment(response['gst_treatment'])
+        contact.set_gst_no(response['gst_no'])
+        contact.set_place_of_contact(response['place_of_contact'])
         contact.set_outstanding_receivable_amount(response[\
             'outstanding_receivable_amount'])
         contact.set_outstanding_receivable_amount_bcy(response[\
@@ -70,7 +73,7 @@ class ContactParser:
             custom_field.set_index(value['index'])
             custom_field.set_value(value['value'])
             custom_field.set_label(value['label'])
-            contact_person.set_custom_fields(custom_field)
+            contact.set_custom_fields(custom_field)
     
         billing_address = Address()
         billing_address.set_address(response['billing_address']['address'])
@@ -154,6 +157,9 @@ class ContactParser:
             contact.set_contact_id(value['contact_id'])
             contact.set_contact_name(value['contact_name'])
             contact.set_company_name(value['company_name'])
+            contact.set_gst_treatment(value['gst_treatment'])
+            contact.set_gst_no(value['gst_no'])
+            contact.set_place_of_contact(value['place_of_contact'])
             contact.set_contact_type(value['contact_type'])
             contact.set_status(value['status'])
             contact.set_payment_terms(value['payment_terms'])

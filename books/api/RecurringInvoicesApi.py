@@ -1,8 +1,8 @@
 #$Id$#
 
 from books.util.ZohoHttpClient import ZohoHttpClient
-from books.parser.RecurringInvoiceParser import RecurringInvoiceParser 
-from Api import Api
+from books.parser.RecurringInvoiceParser import RecurringInvoiceParser
+from .Api import Api
 from json import dumps
 
 base_url = Api().base_url + 'recurringinvoices/'

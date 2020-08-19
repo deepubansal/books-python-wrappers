@@ -46,22 +46,55 @@ class CustomerPaymentsApi:
         
         """
         response = zoho_http_client.get(base_url, self.details, parameter) 
-        return parser.customer_payments(response) 
-  
+        return parser.customer_payments(response)
+
     def get(self, payment_id):
         """Get details of a customer payment.
 
         Args:
             payment_id(str): Payment id of the customer.
- 
+
         Returns:
             instance: Customer payment object.
-        
+
         """
         url = base_url + payment_id
         response = zoho_http_client.get(url, self.details)
-        return parser.get_customer_payment(response) 
-  
+        return parser.get_customer_payment(response)
+
+    def refund(self, payment_id, refund):
+        """Refund excess of a customer payment.
+
+        Args:
+            payment_id(str): Payment id of the customer.
+            refund(CreditNoteRefund): Refund the amount to customer.
+
+        Returns:
+            instance: Customer payment object.
+
+        """
+        url = base_url + payment_id + '/refunds'
+        data = refund.to_json()
+        field = {
+            'JSONString': dumps(data)
+        }
+        response = zoho_http_client.post(url, self.details, field, None)
+        return parser.payment_refunds(response)
+
+    def get_refunds(self, payment_id):
+        """List Refunds of a customer payment.
+
+        Args:
+            payment_id(str): Payment id of the customer.
+
+        Returns:
+            instance: Customer payment object.
+
+        """
+        url = base_url + payment_id + '/refunds'
+        response = zoho_http_client.get(url, self.details, None)
+        return parser.payment_refunds(response)
+
     def create(self, customer_payment):
         """Create a payment made by the customer.
 

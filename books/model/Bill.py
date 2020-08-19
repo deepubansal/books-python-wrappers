@@ -45,6 +45,7 @@ class Bill:
         self.tax_id = ''
         self.notes = ''
         self.terms = ''
+        self.is_inclusive_tax = False
    
     def set_bill_id(self, bill_id):
         """Set bill id.
@@ -108,6 +109,15 @@ class Bill:
 
         """
         self.vendor_id = vendor_id
+
+    def set_is_inclusive_tax(self, is_inclusive_tax):
+        """Set vendor id.
+
+        Args:
+            is_inclusive_tax(bool): is_inclusive_tax.
+
+        """
+        self.is_inclusive_tax = is_inclusive_tax
 
     def get_vendor_id(self):
         """Get vendor id.
@@ -762,6 +772,8 @@ class Bill:
             data['amount_applied'] = self.amount_applied
         if self.vendor_id != '':
             data['vendor_id'] = self.vendor_id
+        if self.is_inclusive_tax:
+            data['is_inclusive_tax'] = self.is_inclusive_tax
         if self.bill_number != '':
             data['bill_number'] = self.bill_number
         if self.reference_number != '':

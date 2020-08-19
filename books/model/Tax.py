@@ -9,6 +9,7 @@ class Tax:
         self.tax_id = ''
         self.tax_percentage = 0.0
         self.tax_type = ''
+        self.tax_specification = ''
 
     def set_tax_id(self, tax_id):
         """Set tax id.
@@ -99,6 +100,24 @@ class Tax:
 
         """
         return self.tax_amount
+
+    def set_tax_specification(self, tax_specification):
+        """Set tax Specification.
+
+        Args:
+            tax_specification(str): Tax Specification.
+
+        """
+        self.tax_specification = tax_specification
+
+    def get_tax_specification(self):
+        """Get tax Specification.
+
+        Returns:
+            str: Tax Specification.
+
+        """
+        return self.tax_specification
 
     def to_json(self):
         """This method is used to convert tax object to json format.

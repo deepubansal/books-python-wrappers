@@ -68,6 +68,9 @@ class Invoice:
         self.amount_applied = ''
         self.name = ''
         self.value = ''
+        self.gst_no = ''
+        self.reason = ''
+
     
     def set_name(self, name):
         """Set name.
@@ -591,11 +594,11 @@ class Invoice:
         """
         return self.total
   
-    def set_taxes(self, taxes):
+    def set_taxes(self, tax):
         """Set taxes.
 
         Args:
-            taxes(instance): Taxes.
+            tax(instance): Tax.
 
         """ 
         self.taxes.append(tax)
@@ -1256,4 +1259,12 @@ class Invoice:
             data['adjustment_description'] = self.adjustment_description
         if self.invoice_number != '':
             data['invoice_number'] = self.invoice_number
+        if self.reason != '':
+            data['reason'] = self.reason
+        if self.invoice_id != '':
+            data['invoice_id'] = self.invoice_id
+        if self.amount_applied != '':
+            data['amount_applied'] = self.amount_applied
+        if self.total != '':
+            data['total'] = self.total
         return data

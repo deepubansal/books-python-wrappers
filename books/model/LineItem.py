@@ -30,7 +30,26 @@ class LineItem:
         self.debit_or_credit = ''
         self.amount = 0.0
         self.discount_amount = 0.0
+        self.hsn_or_sac = ''
 
+    def set_hsn_or_sac(self,hsn_or_sac):
+        """Set hsn_or_sac.
+
+        Args:
+            hsn_or_sac(str): hsn_or_sac.
+
+        """
+        self.hsn_or_sac = hsn_or_sac
+
+    def get_hsn_or_sac(self):
+        """Get hsn_or_sac.
+ 
+        Returns:
+            str: hsn_or_sac.
+
+        """
+        return self.hsn_or_sac
+  
     def set_item_id(self,item_id):
         """Set item id.
 
@@ -42,13 +61,13 @@ class LineItem:
 
     def get_item_id(self):
         """Get item id.
- 
+
         Returns:
             str: Item id.
 
         """
         return self.item_id
-  
+
     def set_line_item_id(self,line_item_id):
         """Set line item id.
 
@@ -197,7 +216,7 @@ class LineItem:
         """Set discount.
 
         Args: 
-            discount(float): Discount.
+            discount(str): Discount.
 
         """
         self.discount = discount
@@ -206,7 +225,7 @@ class LineItem:
         """Get discount.
 
         Returns:
-            float:  Discount.
+            str:  Discount.
 
         """
         return self.discount

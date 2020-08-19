@@ -1,6 +1,6 @@
 #$Id$
 
-class Expense:
+class Expense():
     """This class is used to create objecct for expenses."""
     def __init__(self):
         """Initialize parameters for Expenses object.""" 
@@ -39,6 +39,11 @@ class Expense:
         self.invoice_number = ''
         self.project_name = ''
         self.recurring_expense_id = ''
+        self.product_type = ''
+        self.hsn_or_sac = 0
+        self.gst_no = ''
+        self.gst_treatment = ''
+        self.destination_of_supply = ''
 
     def set_account_id(self, account_id):
         """Set account id.
@@ -707,6 +712,16 @@ class Expense:
             data['recurring_expense_id'] = self.recurring_expense_id
         if self.project_id != '':
             data['project_id'] = self.project_id
+        if self.product_type != '':
+            data['product_type'] = self.product_type
+        if self.hsn_or_sac != '':
+            data['hsn_or_sac'] = self.hsn_or_sac
+        if self.gst_no != '':
+            data['gst_no'] = self.gst_no
+        if self.gst_treatment != '':
+            data['gst_treatment'] = self.gst_treatment
+        if self.destination_of_supply != '':
+            data['destination_of_supply'] = self.destination_of_supply
         return data
 
 

@@ -346,6 +346,8 @@ class SettingsParser:
             item.set_tax_id(value['tax_id'])
             item.set_tax_name(value['tax_name'])
             item.set_tax_percentage(value['tax_percentage'])
+            for tp in value['item_tax_preferences']:
+                item.set_item_tax_preferences(tp)
             items_list.set_items(item)
         page_context_obj = PageContext()
         page_context = resp['page_context']

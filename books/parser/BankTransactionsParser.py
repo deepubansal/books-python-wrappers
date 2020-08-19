@@ -4,7 +4,7 @@ from books.model.Transaction import Transaction
 from books.model.TransactionList import TransactionList
 from books.model.PageContext import PageContext
 from books.model.Instrumentation import Instrumentation
-from books.model.SearchCriteria import SearchCriteria 
+from books.model.SearchCriteria import SearchCriteria
 
 class BankTransactionsParser:
     """This class is used to parse the json response for Bank transactions."""
@@ -113,14 +113,16 @@ class BankTransactionsParser:
             transaction = Transaction()
             transaction.set_transaction_id(value['transaction_id'])
             transaction.set_date(value['date'])
-            transaction.set_date_formatted(value['date_formatted'])
+            transaction.set_date_formatted(value['date_formatted'] if 'date_formatted' in value else None)
             transaction.set_transaction_type(value['transaction_type'])
             transaction.set_transaction_type_formatted(value[\
-            'transaction_type_formatted'])
+            'transaction_type_formatted'] if 'transaction_type_formatted' in value else None)
             transaction.set_reference_number(value['reference_number'])
             transaction.set_amount(value['amount'])
-            transaction.set_amount_formatted(value['amount_formatted'])
+            transaction.set_amount_formatted(value['amount_formatted'] if 'amount_formatted' in value else None)
             transaction.set_debit_or_credit(value['debit_or_credit'])
+            transaction.is_best_match = value['is_best_match'] if 'is_best_match' in value else None
+            transaction.offset_account_name = value['offset_account_name'] if 'offset_account_name' in value else None
             transaction_list.set_transactions(transaction)
         page_context_obj = PageContext()
         page_context = resp['page_context']
@@ -132,7 +134,10 @@ class BankTransactionsParser:
         for value in page_context['search_criteria']:
             criteria = SearchCriteria()
             criteria.set_column_name(value['column_name'])
-            criteria.set_search_text(value['search_text'])
+            if value['comparator'] != 'range':
+                criteria.set_search_text(value['search_text'])
+            else:
+                criteria.set_search_text('{} -- {}'.format(value['search_text_0'], value['search_text_0']))
             criteria.set_comparator(value['comparator'])
             page_context_obj.set_search_criteria(criteria)
         transaction_list.set_page_context(page_context_obj)

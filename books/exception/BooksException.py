@@ -11,6 +11,7 @@ class BooksException(Exception):
 
         """
         Exception.__init__(self)
+        print(content)
         self.code = str(content['code'])
         self.message = content['message']
 
